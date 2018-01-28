@@ -16,7 +16,7 @@ class DBBroker
 
     private function __construct()
     {
-        $this->config = require('db_config.php');
+        $this->config = require('config.php');
     }
 
     private function connect()
@@ -67,23 +67,25 @@ class DBBroker
         return self::$instance;
     }
 
-    public function insert(string $tableName, array $attributes): bool
+    public function insert(array $mapping): bool
     {
+        $tableName = $mapping['tableName'];
+
         $columns = '';
-        foreach ($attributes as $attribute => $column) {
-            $columns .= $column['columnName'] . ', ';
+        foreach ($mapping['columns'] as $column) {
+            $columns .= $column['name'] . ', ';
         }
 
         $columns = substr($columns, 0, -2);
 
-        $values = substr(str_repeat('?, ', count($attributes)), 0, -2);
+        $values = substr(str_repeat('?, ', count($mapping['columns'])), 0, -2);
 
         $stmt = $this->pdo->prepare("INSERT INTO $tableName ($columns) VALUES ($values)");
 
         $binded = true;
         $param = 1;
-        foreach ($attributes as $attribute => $column) {
-            $binded = $stmt->bindParam($param++, $column['columnValue'], $column['columnType'], !empty($column['columnSize']) ? $column['columnSize'] : null);
+        foreach ($mapping['columns'] as $column) {
+            $binded = $stmt->bindParam($param++, $column['value'], $column['type'], !empty($column['size']) ? $column['size'] : null);
             if (!$binded) {
                 break;
             }
@@ -100,26 +102,27 @@ class DBBroker
         }
     }
 
-    public function update(string $tableName, array $attributes, string $condition = null): bool
+    public function update(array $mapping, int $id): bool
     {
+        $tableName = $mapping['tableName'];
         $query = "UPDATE $tableName SET ";
 
-        foreach ($attributes as $attribute => $column) {
-            $query .= "{$column['columnName']} = ?, ";
+        foreach ($mapping['columns'] as $column) {
+            $query .= "{$column['name']} = ?, ";
         }
 
         $query = substr($query, 0, -2);
 
         if (!empty($condition)) {
-            $query .= ' WHERE ' . $condition;
+            $query .= ' WHERE id = ' . $id;
         }
 
         $stmt = $this->pdo->prepare($query);
 
         $binded = true;
         $param = 1;
-        foreach ($attributes as $attribute => $column) {
-            $binded = $stmt->bindParam($param++, $column['columnValue'], $column['columnType'], !empty($column['columnSize']) ? $column['columnSize'] : null);
+        foreach ($mapping['columns'] as $column) {
+            $binded = $stmt->bindParam($param++, $column['value'], $column['type'], !empty($column['size']) ? $column['size'] : null);
             if (!$binded) {
                 break;
             }

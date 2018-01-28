@@ -24,6 +24,10 @@ class ComposerStaticInit27893edad1e78189a1feb9c48099eaf2
         array (
             'Interop\\Container\\' => 18,
         ),
+        'H' => 
+        array (
+            'Helper\\' => 7,
+        ),
         'F' => 
         array (
             'FastRoute\\' => 10,
@@ -50,6 +54,10 @@ class ComposerStaticInit27893edad1e78189a1feb9c48099eaf2
         'Interop\\Container\\' => 
         array (
             0 => __DIR__ . '/..' . '/container-interop/container-interop/src/Interop/Container',
+        ),
+        'Helper\\' => 
+        array (
+            0 => __DIR__ . '/../..' . '/src/helpers',
         ),
         'FastRoute\\' => 
         array (
