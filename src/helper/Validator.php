@@ -4,13 +4,14 @@ namespace Helper;
 
 class Validator
 {
-    public static function isProductValid($product, $mapping): bool
+    public static function isProductValid($product): bool
     {
+        $mapping = require(ROOT . '/src/db/mapping/product.php');
+
         //code validation
         if (is_null($product['code'] || is_array($product['code']))) {
             return false;
         }
-
         if (strlen($product['code']) > $mapping['columns']['code']['size']) {
             return false;
         }
@@ -19,7 +20,6 @@ class Validator
         if (is_null($product['name']) || is_array($product['name'])) {
             return false;
         }
-
         if (strlen($product['name']) > $mapping['columns']['name']['size']) {
             return false;
         }
@@ -28,11 +28,9 @@ class Validator
         if (is_null($product['unit'] || is_array($product['unit']))) {
             return false;
         }
-
         if (strlen($product['unit']) > $mapping['columns']['unit']['size']) {
             return false;
         }
-
         if (!in_array($product['unit'], ['komad', 'gram', 'kilogram', 'mililitar', 'litar'])) {
             return false;
         }
@@ -41,15 +39,21 @@ class Validator
         if (is_null($product['price'] || is_array($product['price']))) {
             return false;
         }
-
         if (strlen($product['price']) > $mapping['columns']['price']['size']) {
             return false;
         }
-
         if (!floatval($product['price'])) {
             return false;
         }
 
         return true;
+    }
+
+    public static function isIdValid($id): bool
+    {
+        if (ctype_digit((string)$id)) {
+            return true;
+        }
+        return false;
     }
 }

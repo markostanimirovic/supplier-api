@@ -102,7 +102,7 @@ class DBBroker
         }
     }
 
-    public function update(array $mapping, int $id): bool
+    public function update(int $id, array $mapping): bool
     {
         $tableName = $mapping['tableName'];
         $query = "UPDATE $tableName SET ";
@@ -112,11 +112,7 @@ class DBBroker
         }
 
         $query = substr($query, 0, -2);
-
-        if (!empty($condition)) {
-            $query .= ' WHERE id = ' . $id;
-        }
-
+        $query .= ' WHERE id = ' . $id;
         $stmt = $this->pdo->prepare($query);
 
         $binded = true;
