@@ -40,22 +40,24 @@ class NotAllowed extends AbstractHandler
         } else {
             $status = 405;
             $contentType = $this->determineContentType($request);
-            switch ($contentType) {
-                case 'application/json':
-                    $output = $this->renderJsonNotAllowedMessage($methods);
-                    break;
-
-                case 'text/xml':
-                case 'application/xml':
-                    $output = $this->renderXmlNotAllowedMessage($methods);
-                    break;
-
-                case 'text/html':
-                    $output = $this->renderHtmlNotAllowedMessage($methods);
-                    break;
-                default:
-                    throw new UnexpectedValueException('Cannot render unknown content type ' . $contentType);
-            }
+//            switch ($contentType) {
+//                case 'application/json':
+//                    $output = $this->renderJsonNotAllowedMessage($methods);
+//                    break;
+//
+//                case 'text/xml':
+//                case 'application/xml':
+//                    $output = $this->renderXmlNotAllowedMessage($methods);
+//                    break;
+//
+//                case 'text/html':
+//                    $output = $this->renderHtmlNotAllowedMessage($methods);
+//                    break;
+//                default:
+//                    throw new UnexpectedValueException('Cannot render unknown content type ' . $contentType);
+//            }
+            $contentType = 'application/json';
+            $output = $this->renderJsonNotAllowedMessage($methods);
         }
 
         $body = new Body(fopen('php://temp', 'r+'));

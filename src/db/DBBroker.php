@@ -16,7 +16,7 @@ class DBBroker
 
     private function __construct()
     {
-        $this->config = require('config.php');
+        $this->config = require(ROOT . 'src/db/config.php');
     }
 
     private function connect()
