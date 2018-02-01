@@ -1,3 +1,3 @@
 # SupplierApi
 
-Simple RESTful Web Service with JWT Authentication
+Simple RESTful JSON Web Service with JWT Authentication
