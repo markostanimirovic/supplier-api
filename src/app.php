@@ -14,6 +14,10 @@ $container['ProductController'] = function () {
     return new Controller\ProductController;
 };
 
+$container['AuthController'] = function () {
+    return new Controller\AuthController;
+};
+
 $app->add(new \Slim\Middleware\JwtAuthentication([
     "secret" => "supplier-api",
     "rules" => [
@@ -32,5 +36,3 @@ $app->add(new \Slim\Middleware\JwtAuthentication([
 ]));
 
 require ROOT . '/src/routes.php';
-
-$app->run();
